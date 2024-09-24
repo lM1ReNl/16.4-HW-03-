@@ -1,0 +1,72 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+    <div class="text-center">
+    <h1>Поиск новостей и статей</h1>
+    <br>
+    <form action="" method="get">
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Найти" />
+    </form>
+    </div>
+    <hr>
+    {% if news %}
+    <div class="text-center"><h4>Количество найденных статей: {{ page_obj.paginator.count }}</h4>
+    </div>
+<br>
+       <table>
+           <tr>
+               <td><h5>Заголовок</h5></td>
+               <td><h5>Дата публикации</h5></td>
+               <td><h5>Текст статьи</h5></td>
+               <td><h5>Автор</h5></td>
+           </tr>
+           {% for post in news %}
+           <tr>
+               <td><a href="{% url 'post_detail' post.id %}">{{ post.title|censor }}</a></td>
+               <td>{{ post.creation_date }}</td>
+               <td>{{ post.text|truncatewords:4 }}</td>
+               <td>{{ post.author.full_name }}</td>
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Новости не найдены!</h2>
+   {% endif %}
+<br>
+<div class="text-center">
+   {% if page_obj.has_previous %}
+
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+
+       {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+</div>
+
+<a href="{% url 'news_create' %}">Добавить новость</a><br>
+<a href="{% url 'article_create' %}">Добавить статью</a><br>
+
+{% endblock content %}
+</div>
+

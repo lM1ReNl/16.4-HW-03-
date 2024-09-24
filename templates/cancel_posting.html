@@ -1,0 +1,9 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+
+<h2>Уважаемый(-ая) {{ author.full_name }}, Вы превысили ежедневный лимит на создание новостей! <br>Ждем Вас завтра!</h2>
+
+<br><a href="{% url 'post_list' %}">На главную</a>
+
+{% endblock content %}

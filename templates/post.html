@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}!
+
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+<div class="text-center"><h1>Заголовок: {{ post.title|censor }}</h1><br>
+</div><br>
+<li>Дата публикации: {{ post.creation_date|date:'d M Y' }}</li><br>
+<a>{{ post.text|censor }}</a>
+<br>
+<br>
+<li>Автор: {{ post.author.full_name }}</li><br>
+
+{% endblock content %}

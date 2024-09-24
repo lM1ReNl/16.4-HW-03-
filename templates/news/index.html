@@ -1,0 +1,27 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Author
+{% endblock title %}
+
+
+<br>
+{% block content %}
+<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+<div> Здесь может содержаться персональная информация пользователя </div>
+<br>
+{% for author in news.author %}
+<div class="text-left"><h2>Имя автора: {{request.user.username}}</h2><br>
+</div><br>
+{% endfor %}
+<br>
+{% if is_not_authors %}
+<button> <a href="{% url 'upgrade' %}"> Хочу стать автором!</a> </button>
+{% endif %}
+<br><br>
+{% if not is_not_authors %}
+<button><a href="{% url 'news_create' %}">Добавить новость</a></button><br><br>
+<button><a href="{% url 'article_create' %}">Добавить статью</a></button><br><br>
+{% endif %}
+<button> <a href="/accounts/logout/">Выйти</a> </button>
+{% endblock %}

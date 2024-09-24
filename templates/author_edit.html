@@ -1,0 +1,25 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Author
+{% endblock title %}
+
+{% block content %}
+<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+
+<br>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+</form>
+
+<br>
+<button><a href="{% url 'news_create' %}">Добавить новость</a></button><br><br>
+<button><a href="{% url 'article_create' %}">Добавить статью</a></button><br><br>
+
+<br>
+<!--<button> <a href="/accounts/logout/">Сохранить</a> </button>-->
+<button> <a href="/accounts/logout/">Выйти</a> </button>
+{% endblock content %}

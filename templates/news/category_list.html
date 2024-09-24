@@ -1,0 +1,76 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+
+{% if is_not_subscriber %}
+    <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a></p>
+{% endif %}
+
+<div class="text-center">
+<h1>Все новости и статьи</h1>
+<br>
+<h3>{{ time_now|date:'M d Y' }}</h3>
+<hr>
+{% if category_news_list %}
+    <h4>Количество статей на странице:
+    {{ news|length }}</h4>
+</div>
+<br>
+       <table>
+           <tr>
+               <td><h4>Заголовок</h4></td>
+               <td><h4>Категории</h4></td>
+               <td><h4>Дата публикации</h4></td>
+               <td><h4>Текст статьи</h4></td>
+               <td><h4>Автор</h4></td>
+           </tr>
+           {% for post in category_news_list %}
+           <tr>
+               <td>{{ post.title|censor }}</td>
+               <td>{% for category in post.category.all %}
+                   <a href="{% url 'category_list' category.id %}">{{ category }}</a>
+                   {% endfor %}
+               </td>
+               <td>{{ post.creation_date }}</td>
+               <td>{{ post.text|truncatewords:4 }}</td>
+               <td>{{ post.author.full_name }}</td>
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Пока новостей нет!</h2>
+   {% endif %}
+<br>
+<div class="text-center">
+   {% if page_obj.has_previous %}
+
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+
+       {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+</div>
+
+<a href="{% url 'news_create' %}">Добавить новость</a><br>
+<a href="{% url 'article_create' %}">Добавить статью</a><br>
+
+{% endblock content %}
